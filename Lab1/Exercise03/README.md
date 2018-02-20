@@ -55,7 +55,7 @@ protcseg:
 ==============================================================================================================================
 boot执行的最后一条指令：
 ```
-    // call the entry point from the ELF header                                                                                                                                            
+    // call the entry point from the ELF header
     // note: does not return!
     ((void (*)(void)) (ELFHDR->e_entry))();
 ```

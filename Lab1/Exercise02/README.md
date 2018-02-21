@@ -1,5 +1,4 @@
-#启动调试
-=========
+# 启动调试
 开两个终端窗口，一个运行make qemu-gdb，另一个运行make gdb
 
 进入gdb后，在gdb命令行中输入info reg可以看到当前的寄存器情况，可以看到:
@@ -38,18 +37,12 @@ cs             0xf000	61440
    0xfe07b:     push   %edi
    0xfe07d:     push   %esi
 ```
-
-#what the BIOS is doing first
-==============================
+# 问题
+## what the BIOS is doing first ?
 0xffff0 is 16 bytes before the end of the BIOS (0x100000). 
-Therefore we shouldn't be surprised that the first thing that 
-the BIOS does is jmp backwards to an earlier location in the BIOS
+Therefore we shouldn't be surprised that the first thing that the BIOS does is jmp backwards to an earlier location in the BIOS
 
-#what the BIOS might be doing
-==============================
-1.When the BIOS runs, it sets up an interrupt descriptor table and 
-initializes various devices such as the VGA display.
-2.After initializing the PCI bus and all the important devices the BIOS knows 
-about, it searches for a bootable device such as a floppy, hard drive, or CD-ROM. 
-3.Eventually, when it finds a bootable disk, the BIOS reads the boot loader from 
-the disk and transfers control to it.
+## what the BIOS might be doing ?
+1.When the BIOS runs, it sets up an interrupt descriptor table and initializes various devices such as the VGA display.
+2.After initializing the PCI bus and all the important devices the BIOS knows about, it searches for a bootable device such as a floppy, hard drive, or CD-ROM. 
+3.Eventually, when it finds a bootable disk, the BIOS reads the boot loader from the disk and transfers control to it.

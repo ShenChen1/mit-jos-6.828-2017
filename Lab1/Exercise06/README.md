@@ -1,11 +1,9 @@
-#结论
-=====
+# 分析
 当BIOS进入bootloader时，因为此时工作在实模式，0x10000以上的内存根本无法访问，所以内存中的内容应该为空。
 bootloader进入kernel时，程序地址0x100000处加载的操作系统的代码。
 
-#验证
-=====
-##进入bootloader
+# 验证
+## 进入bootloader
 ```
 (gdb) b *0x7c00
 Breakpoint 1 at 0x7c00
@@ -18,7 +16,7 @@ Breakpoint 1, 0x00007c00 in ?? ()
 0x100000:       0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
 0x100008:       0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
 ```
-##即将进入kernel
+## 即将进入kernel
 ```
 (gdb) b *0x7d74
 Breakpoint 2 at 0x7d74
@@ -34,8 +32,7 @@ Breakpoint 2, 0x00007d74 in ?? ()
 ```
 可以看出此时内存地址0x10000处已经有内容了
 
-#ELF文件分析
-============
+## ELF分析
 使用objdump可以查看kernel文件的加载地址：
 ```
 Sections:

@@ -1,7 +1,7 @@
-# 启动调试
+# 调试
 开两个终端窗口，一个运行make qemu-gdb，另一个运行make gdb
 
-进入gdb后，在gdb命令行中输入info reg可以看到当前的寄存器情况，可以看到:
+进入gdb后，查看年寄存器情况:
 ```
 (gdb) info reg
 eip            0xfff0	0xfff0

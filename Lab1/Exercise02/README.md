@@ -43,6 +43,6 @@ cs             0xf000	61440
 Therefore we shouldn't be surprised that the first thing that the BIOS does is jmp backwards to an earlier location in the BIOS
 
 ## what the BIOS might be doing ?
-1.When the BIOS runs, it sets up an interrupt descriptor table and initializes various devices such as the VGA display.
-2.After initializing the PCI bus and all the important devices the BIOS knows about, it searches for a bootable device such as a floppy, hard drive, or CD-ROM. 
-3.Eventually, when it finds a bootable disk, the BIOS reads the boot loader from the disk and transfers control to it.
+* 1.When the BIOS runs, it sets up an interrupt descriptor table and initializes various devices such as the VGA display.
+* 2.After initializing the PCI bus and all the important devices the BIOS knows about, it searches for a bootable device such as a floppy, hard drive, or CD-ROM. 
+* 3.Eventually, when it finds a bootable disk, the BIOS reads the boot loader from the disk and transfers control to it.

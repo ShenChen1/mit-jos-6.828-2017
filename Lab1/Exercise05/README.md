@@ -1,15 +1,11 @@
-#分析
-=====
+# 分析
 bootloader是由BIOS加载的，不论链接地址是多少，最终都会被拷贝到物理内存的0x7c00处
 当bootloader的link address修改以后，会导致链接地址和装载地址不一致，而只有涉及绝对位置的指令才有可能问题
 因此boot.S中可能会出错的指令：
-```
-1.lgdt    gdtdesc
-2.ljmp    $PROT_MODE_CSEG, $protcseg
-```
+* 1.lgdt    gdtdesc
+* 2.ljmp    $PROT_MODE_CSEG, $protcseg
 
-#验证
-=====
+# 调试
 把boot/Makefrag的-Ttext修改为0x7C04，此时内存情况：
 ```
 (gdb) x/32i 0x7c00  
@@ -47,7 +43,7 @@ bootloader是由BIOS加载的，不论链接地址是多少，最终都会被拷
 0x7c94: 0xf57540f8      0x0001f2ba      0xee01b000      0xc888f3b2
 ```
 可以看到：
-1.lgdt    gdtdesc
+* lgdt    gdtdesc
 正常情况下lgdtw的地址为0x7c64：
 ```
 00007c64 <gdtdesc>:
@@ -72,7 +68,7 @@ bootloader是由BIOS加载的，不论链接地址是多少，最终都会被拷
 ```
 但是这条指令只是加载GDTR寄存器，虽然这个寄存器的内容是有问题的，但是由于还没有访存，所以还没有直接导致出错
 
-2.ljmp    $PROT_MODE_CSEG, $protcseg
+* ljmp    $PROT_MODE_CSEG, $protcseg
 ```
    0x7c2d:      ljmp   $0x8,$0x7c36
    0x7c32:      mov    $0xd88e0010,%eax

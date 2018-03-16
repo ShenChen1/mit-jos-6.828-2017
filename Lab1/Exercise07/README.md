@@ -28,8 +28,7 @@ movl	%eax, %cr0
 
 # 问题
 ## What is the first instruction after the new mapping is established that would fail to work properly if the mapping weren't in place? 
-出问题的应该是jmp *%eax，因为编译的时候mov $relocated, %eax被转化为mov $0xf010002f,%eax
-如果没有建立物理地址与虚拟地址的映射，跳转以后就会跑飞
+出问题的应该是jmp *%eax后的第一个指令，因为编译的时候mov $relocated, %eax被转化为mov $0xf010002f,%eax，如果没有建立物理地址与虚拟地址的映射，跳转以后就会跑飞
 
 # 验证
 ```

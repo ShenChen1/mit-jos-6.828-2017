@@ -7,6 +7,7 @@ If you're feeling really adventurous, you could try switching the VGA hardware i
 draw text onto the graphical frame buffer.
 ```
 
+```
 diff --git a/Lab1/lab/inc/stdio.h b/Lab1/lab/inc/stdio.h
 index a44b491..ed8a6f7 100644
 --- a/Lab1/lab/inc/stdio.h
@@ -81,3 +82,4 @@ index 6932ca5..8b1ec34 100644
 +
 +}
 +
+```

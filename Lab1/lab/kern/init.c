@@ -43,6 +43,15 @@ i386_init(void)
 
 	cprintf("x=%d y=%d\n", 3);
 
+	cprintf_ex(BLACK, "BLACK\n");
+	cprintf_ex(RED, "RED\n");
+	cprintf_ex(GREEN, "GREEN\n");
+	cprintf_ex(BROWN, "BROWN\n");
+	cprintf_ex(BLUE, "BLUE\n");
+	cprintf_ex(MAGENTA, "MAGENTA\n");
+	cprintf_ex(CYAN, "CYAN\n");
+	cprintf_ex(WHITE, "WHITE\n");
+
 	// Test the stack backtrace function (lab 1 only)
 	test_backtrace(5);
 

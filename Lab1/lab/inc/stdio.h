@@ -22,6 +22,21 @@ int	vsnprintf(char *str, int size, const char *fmt, va_list);
 int	cprintf(const char *fmt, ...);
 int	vcprintf(const char *fmt, va_list);
 
+// printf with color
+typedef enum
+{
+	NONE	= 0,
+	BLACK	= 30,
+	RED		= 31,
+	GREEN	= 32,
+	BROWN	= 33,
+	BLUE	= 34,
+	MAGENTA = 35,
+	CYAN	= 36,
+	WHITE	= 37,
+} COLOR;
+int	cprintf_ex(COLOR color, const char *fmt, ...);
+
 // lib/fprintf.c
 int	printf(const char *fmt, ...);
 int	fprintf(int fd, const char *fmt, ...);

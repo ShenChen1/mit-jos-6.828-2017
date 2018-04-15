@@ -35,3 +35,23 @@ cprintf(const char *fmt, ...)
 	return cnt;
 }
 
+int cprintf_ex(COLOR color, const char *fmt, ...)
+{
+	if(color < BLACK || color > WHITE)
+		return -1;
+
+	cprintf("\033[%dm", color);
+
+	va_list ap;
+	int cnt;
+
+	va_start(ap, fmt);
+	cnt = vcprintf(fmt, ap);
+	va_end(ap);
+	
+	cprintf("\033[%dm", NONE);
+
+	return cnt;
+
+}
+

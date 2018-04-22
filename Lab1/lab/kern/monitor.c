@@ -54,10 +54,36 @@ mon_kerninfo(int argc, char **argv, struct Trapframe *tf)
 	return 0;
 }
 
+static void 
+_backtrace(uint32_t cur_ebp)
+{
+	extern char bootstacktop[];
+
+	int i = 0;
+	struct Eipdebuginfo info;
+	uint32_t ebp = *((uint32_t *)cur_ebp);
+	uint32_t eip = *((uint32_t *)(cur_ebp + sizeof(cur_ebp)));
+
+	cprintf("  ebp %x  eip %x  args ", cur_ebp, eip);
+	for (i = 1; i < 6; i++)
+	{
+		cprintf("%08x ", *((uint32_t *)(cur_ebp + sizeof(cur_ebp) + i*sizeof(uint32_t))));
+	}
+	cprintf("\n");
+
+	if (ebp == 0)
+		return ;
+
+	_backtrace(ebp);
+}
+
 int
 mon_backtrace(int argc, char **argv, struct Trapframe *tf)
 {
 	// Your code here.
+	cprintf("Stack backtrace:\n");
+	_backtrace(read_ebp());
+	
 	return 0;
 }
 

@@ -37,13 +37,3 @@
    0xf0100039:  call   0xf01000df <i386_init>
 ```
 可以看到数据确实是一样的
-
-# Question
-```
-Assuming that the following JOS kernel code is correct, what type should variable x have, uintptr_t or physaddr_t?
-	mystery_t x;
-	char* value = return_a_pointer();
-	*value = 10;
-	x = (mystery_t) value;
-```
-很明显mystery_t是uintptr_t

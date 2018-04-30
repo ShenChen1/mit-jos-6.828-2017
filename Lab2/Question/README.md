@@ -6,7 +6,9 @@
     *value = 10;
     x = (mystery_t) value;
 ```
-ºÜÃ÷ÏÔmystery_tÊÇuintptr_t
+```
+å¾ˆæ˜æ˜¾mystery_tæ˜¯uintptr_t
+```
 
 ```
 2.What entries (rows) in the page directory have been filled in at this point? 
@@ -15,13 +17,13 @@ In other words, fill out this table as much as possible:
    Entry    Base Virtual Address        Points to (logically):
    1023     0xffc0000                   page table for top 4MB of phys memory
    1022     0xff80000                   page table for 248MB--(252MB-1) phys mem
-   ¡­        ¡­                           page table for ... phys mem
+   â€¦        â€¦                           page table for ... phys mem
    960      0xf000000(KERNBASE)         page table for kernel code & static data 0--(4MB-1) phys mem
    959      0xefc0000(VPT)              page directory self(kernel RW)
    958      0xef80000(ULIM)             page table for kernel stack
    957      0xef40000(UVPT)             same as 959 (user kernel R)
    956      0xef00000(UPAGES)           page table for struct Pages[]
-   ...      ¡­                           NULL
+   ...      â€¦                           NULL
    1        0x00400000                  NULL
    0        0x00000000                  same as 960 (then turn to NULL)
 ```
@@ -31,19 +33,25 @@ In other words, fill out this table as much as possible:
 Why will user programs not be able to read or write the kernel's memory? 
 What specific mechanisms protect the kernel memory?
 ```
-ÒÀ¿¿Ò³Ä¿Â¼»òÒ³±íµÄÈ¨ÏŞÎ»PTE_U£¬ÓÃ»§Ì¬³ÌĞòÎŞ·¨¶ÁĞ´ÄÚºËÌ¬ÄÚ´æ
-ÔÚMMU´¦ÀíĞéÄâµØÖ·µ½ÄÚºËµØÖ·µÄÊ±ºò»á¼ìÑéÈ¨ÏŞÎ»PTE_U£¬´Ó¶ø±£»¤ÄÚºËÌ¬ÄÚ´æ
+```
+ä¾é é¡µç›®å½•æˆ–é¡µè¡¨çš„æƒé™ä½PTE_Uï¼Œç”¨æˆ·æ€ç¨‹åºæ— æ³•è¯»å†™å†…æ ¸æ€å†…å­˜
+åœ¨MMUå¤„ç†è™šæ‹Ÿåœ°å€åˆ°å†…æ ¸åœ°å€çš„æ—¶å€™ä¼šæ£€éªŒæƒé™ä½PTE_Uï¼Œä»è€Œä¿æŠ¤å†…æ ¸æ€å†…å­˜
+```
 
 ```
 4.What is the maximum amount of physical memory that this operating system can support? Why?
 ```
-pagesÊı×éÖ»ÄÜÕ¼ÓÃ×î¶à4MBµÄ¿Õ¼ä£¬¶øÃ¿¸öPageInfoÕ¼ÓÃ8Byte£¬Ò²¾ÍÊÇËµ×î¶àÖ»ÄÜÓĞ512kÒ³£¬Ã¿Ò³ÈİÁ¿4kB£¬×Ü¹²×î¶à2GB
+```
+pagesæ•°ç»„åªèƒ½å ç”¨æœ€å¤š4MBçš„ç©ºé—´ï¼Œè€Œæ¯ä¸ªPageInfoå ç”¨8Byteï¼Œä¹Ÿå°±æ˜¯è¯´æœ€å¤šåªèƒ½æœ‰512ké¡µï¼Œæ¯é¡µå®¹é‡4kBï¼Œæ€»å…±æœ€å¤š2GB
+```
 
 ```
 5.How much space overhead is there for managing memory, if we actually had the maximum amount of physical memory? How is this overhead broken down?
 ```
-µ±´ïµ½×î¸ßÎïÀíÄÚ´æÊ±£¬1¸öÒ³Ä¿Â¼ºÍ1024¸öÒ³±í¶¼ÔÚ¹¤×÷£¬Òò´ËÒ»¹²(1024 + 1) * 4kB = 4100kB£¬»¹Òª¼ÓÉÏpagesÊı×éËùÕ¼ÓÃµÄ4MB£¬Ò»¹²8196kB
-½«PTE_PSÖÃÎ»£¬Ê¹µÃÒ³Ãæ´óĞ¡ÓÉ4K±äÎª4M¼´¿É¼õÉÙ¿ªÖ§
+```
+å½“è¾¾åˆ°æœ€é«˜ç‰©ç†å†…å­˜æ—¶ï¼Œ1ä¸ªé¡µç›®å½•å’Œ1024ä¸ªé¡µè¡¨éƒ½åœ¨å·¥ä½œï¼Œå› æ­¤ä¸€å…±(1024 + 1) * 4kB = 4100kBï¼Œè¿˜è¦åŠ ä¸Špagesæ•°ç»„æ‰€å ç”¨çš„4MBï¼Œä¸€å…±8196kB
+å°†PTE_PSç½®ä½ï¼Œä½¿å¾—é¡µé¢å¤§å°ç”±4Kå˜ä¸º4Må³å¯å‡å°‘å¼€æ”¯
+```
 
 ```
 6.Revisit the page table setup in kern/entry.S and kern/entrypgdir.c. 
@@ -52,9 +60,8 @@ At what point do we transition to running at an EIP above KERNBASE?
 What makes it possible for us to continue executing at a low EIP between when we enable paging and when we begin running at an EIP above KERNBASE? 
 Why is this transition necessary?
 ```
-ÔÚjmpÖ®ºó£¬EIPµÄÖµÊÇÔÚKERNBASEÒÔÉÏµÄ£¬ÒòÎªrelocated = 0xf010002f£»ÔÚÕâÖ®Ç°EIP = 0x10002d£¬ÔÚÕâÖ®ºóEIP = 0xf010002f
-ÓÉÓÚÔÚkern/entrypgdir.cÖĞ½«0~4MBºÍKERNBASE~KERNBASE+4MBµÄĞéÄâµØÖ·¶¼Ó³Éäµ½ÁË0~4MBµÄÎïÀíµØÖ·ÉÏ£¬Òò´ËÎŞÂÛ EIP ÔÚ¸ßÎ»ºÍµÍÎ»¶¼ÄÜÖ´ĞĞ
-±ØĞèÕâÃ´×öÊÇÒòÎªÖ»Ó³Éä¸ßÎ»µØÖ·µÄ»°£¬ÄÇÃ´ÔÚ¿ªÆô·ÖÒ³»úÖÆµÄÏÂÒ»ÌõÓï¾ä¾Í»ácrash
-
-
-
+```
+åœ¨jmpä¹‹åï¼ŒEIPçš„å€¼æ˜¯åœ¨KERNBASEä»¥ä¸Šçš„ï¼Œå› ä¸ºrelocated = 0xf010002fï¼›åœ¨è¿™ä¹‹å‰EIP = 0x10002dï¼Œåœ¨è¿™ä¹‹åEIP = 0xf010002f
+ç”±äºåœ¨kern/entrypgdir.cä¸­å°†0~4MBå’ŒKERNBASE~KERNBASE+4MBçš„è™šæ‹Ÿåœ°å€éƒ½æ˜ å°„åˆ°äº†0~4MBçš„ç‰©ç†åœ°å€ä¸Šï¼Œå› æ­¤æ— è®ºEIPåœ¨é«˜ä½å’Œä½ä½éƒ½èƒ½æ‰§è¡Œ
+å¿…éœ€è¿™ä¹ˆåšæ˜¯å› ä¸ºåªæ˜ å°„é«˜ä½åœ°å€çš„è¯ï¼Œé‚£ä¹ˆåœ¨å¼€å¯åˆ†é¡µæœºåˆ¶çš„ä¸‹ä¸€æ¡è¯­å¥å°±ä¼šcrash
+```

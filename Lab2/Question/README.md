@@ -49,7 +49,7 @@ pages数组只能占用最多4MB的空间，而每个PageInfo占用8Byte，也�
 5.How much space overhead is there for managing memory, if we actually had the maximum amount of physical memory? How is this overhead broken down?
 ```
 ```
-当达到最高物理内存时，1个页目录和1024个页表都在工作，因此一共(1024 + 1) * 4kB = 4100kB，还要加上pages数组所占用的4MB，一共8196kB
+当达到最高物理内存2GB时，1个页目录和512个页表都在工作，因此一共(512 + 1) * 4kB = 2052kB，还要加上pages数组所占用的4MB，一共6148kB
 将PTE_PS置位，使得页面大小由4K变为4M即可减少开支
 ```
 

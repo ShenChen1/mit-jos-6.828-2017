@@ -199,10 +199,32 @@ mem_init(void)
 	// we just set up the mapping anyway.
 	// Permissions: kernel RW, user NONE
 	// Your code goes here:
-	boot_map_region(kern_pgdir, KERNBASE, 0xFFFFFFFF-KERNBASE+1, 0, PTE_W);
+#if 0
+	// Check to see if cpu supports pse
+	uint32_t edx;
+	cpuid(1, NULL, NULL, NULL, &edx);
+	if (edx & (1 << 3)) {
+		// Turn on cr4 pse
+		lcr4(rcr4() | CR4_PSE);
 
-	// Check that the initial page directory has been set up correctly.
-	check_kern_pgdir();
+	    uintptr_t 	va = KERNBASE;
+	    physaddr_t 	pa = 0;
+	    size_t 		i = 0;
+	    for (i = 0; i < (0xFFFFFFFF-KERNBASE+1)/PTSIZE; i++) {
+	        kern_pgdir[PDX(va)] = pa | PTE_W | PTE_P | PTE_PS;
+	        va += PTSIZE;
+	        pa += PTSIZE;
+	    }
+	}
+	else
+#endif
+	{
+		boot_map_region(kern_pgdir, KERNBASE, 0xFFFFFFFF-KERNBASE+1, 0, PTE_W);
+
+		// Check that the initial page directory has been set up correctly.
+		check_kern_pgdir();
+	}
+
 
 	// Switch from the minimal entry page directory to the full kern_pgdir
 	// page table we just created.	Our instruction pointer should be

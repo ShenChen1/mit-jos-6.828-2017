@@ -46,10 +46,48 @@
 /*
  * Lab 3: Your code here for generating entry points for the different traps.
  */
-
-
+	TRAPHANDLER_NOEC(HANDLER_DIVIDE, T_DIVIDE);
+	TRAPHANDLER_NOEC(HANDLER_DEBUG, T_DEBUG);
+	TRAPHANDLER_NOEC(HANDLER_NMI, T_NMI);
+	TRAPHANDLER_NOEC(HANDLER_BRKPT, T_BRKPT);
+	TRAPHANDLER_NOEC(HANDLER_OFLOW, T_OFLOW);
+	TRAPHANDLER_NOEC(HANDLER_BOUND, T_BOUND);
+	TRAPHANDLER_NOEC(HANDLER_ILLOP, T_ILLOP);
+	TRAPHANDLER_NOEC(HANDLER_DEVICE, T_DEVICE);
+	TRAPHANDLER(HANDLER_DBLFLT, T_DBLFLT);
+	TRAPHANDLER(HANDLER_TSS, T_TSS);
+	TRAPHANDLER(HANDLER_SEGNP, T_SEGNP);
+	TRAPHANDLER(HANDLER_STACK, T_STACK);
+	TRAPHANDLER(HANDLER_GPFLT, T_GPFLT);
+	TRAPHANDLER(HANDLER_PGFLT, T_PGFLT);
+	TRAPHANDLER_NOEC(HANDLER_FPERR, T_FPERR);
+	TRAPHANDLER(HANDLER_ALIGN, T_ALIGN);
+	TRAPHANDLER_NOEC(HANDLER_MCHK, T_MCHK);
+	TRAPHANDLER_NOEC(HANDLER_SIMDERR, T_SIMDERR);
 
 /*
  * Lab 3: Your code here for _alltraps
  */
+/*
+1.push values to make the stack look like a struct Trapframe
+2.load GD_KD into %ds and %es
+3.pushl %esp to pass a pointer to the Trapframe as an argument to trap()
+4.call trap (can trap ever return?)
+*/
 
+_alltraps:
+        # Push values on the stack in the order defined by struct Trapframe
+        pushl %ds
+        pushl %es
+        pushal
+
+        # Load GD_KD
+        movl $GD_KD, %eax
+        movw %ax, %ds
+        movw %ax, %es
+
+        # Pass a pointer to Trapframe as the parameter
+        pushl %esp
+
+        # Call trap
+        call trap

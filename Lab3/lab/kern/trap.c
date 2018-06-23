@@ -64,7 +64,51 @@ trap_init(void)
 {
 	extern struct Segdesc gdt[];
 
+	// About interrupt gate and trap gate, 
+	// if you can't distinguish them, 
+	// I suggest using interrupt gate. 
+	// Because it will modify IF to make sure your handler 
+	// not be interrupted by other events. So that the 2nd 
+	// parameter of SETGATE is set to 0.
+
+	extern void HANDLER_DIVIDE(void);
+	extern void HANDLER_DEBUG(void);
+	extern void HANDLER_NMI(void);
+	extern void HANDLER_BRKPT(void);
+	extern void HANDLER_OFLOW(void);
+	extern void HANDLER_BOUND(void);
+	extern void HANDLER_ILLOP(void);
+	extern void HANDLER_DEVICE(void);
+	extern void HANDLER_DBLFLT(void);
+	extern void HANDLER_TSS(void);
+	extern void HANDLER_SEGNP(void);
+	extern void HANDLER_STACK(void);
+	extern void HANDLER_GPFLT(void);
+	extern void HANDLER_PGFLT(void);
+	extern void HANDLER_FPERR(void);
+	extern void HANDLER_ALIGN(void);
+	extern void HANDLER_MCHK(void);
+	extern void HANDLER_SIMDERR(void);
+
 	// LAB 3: Your code here.
+	SETGATE(idt[T_DIVIDE], false, GD_KT, HANDLER_DIVIDE, 0);
+	SETGATE(idt[T_DEBUG], false, GD_KT, HANDLER_DEBUG, 0);
+	SETGATE(idt[T_NMI], false, GD_KT, HANDLER_NMI, 0);
+	SETGATE(idt[T_BRKPT], false, GD_KT, HANDLER_BRKPT, 3);
+	SETGATE(idt[T_OFLOW], false, GD_KT, HANDLER_OFLOW, 0);
+	SETGATE(idt[T_BOUND], false, GD_KT, HANDLER_BOUND, 0);
+	SETGATE(idt[T_ILLOP], false, GD_KT, HANDLER_ILLOP, 0);
+	SETGATE(idt[T_DEVICE], false, GD_KT, HANDLER_DEVICE, 0);
+	SETGATE(idt[T_DBLFLT], false, GD_KT, HANDLER_DBLFLT, 0);
+	SETGATE(idt[T_TSS], false, GD_KT, HANDLER_TSS, 0);
+	SETGATE(idt[T_SEGNP], false, GD_KT, HANDLER_SEGNP, 0);
+	SETGATE(idt[T_STACK], false, GD_KT, HANDLER_STACK, 0);
+	SETGATE(idt[T_GPFLT], false, GD_KT, HANDLER_GPFLT, 0);
+	SETGATE(idt[T_PGFLT], false, GD_KT, HANDLER_PGFLT, 0);
+	SETGATE(idt[T_FPERR], false, GD_KT, HANDLER_FPERR, 0);
+	SETGATE(idt[T_ALIGN], false, GD_KT, HANDLER_ALIGN, 0);
+	SETGATE(idt[T_MCHK], false, GD_KT, HANDLER_MCHK, 0);
+	SETGATE(idt[T_SIMDERR], false, GD_KT, HANDLER_SIMDERR, 0);
 
 	// Per-CPU setup 
 	trap_init_percpu();
@@ -153,6 +197,7 @@ trap_dispatch(struct Trapframe *tf)
 		env_destroy(curenv);
 		return;
 	}
+
 }
 
 void

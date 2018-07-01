@@ -71,6 +71,7 @@ trap_init(void)
 	// not be interrupted by other events. So that the 2nd 
 	// parameter of SETGATE is set to 0.
 
+#if 0
 	extern void HANDLER_DIVIDE(void);
 	extern void HANDLER_DEBUG(void);
 	extern void HANDLER_NMI(void);
@@ -109,6 +110,20 @@ trap_init(void)
 	SETGATE(idt[T_ALIGN], false, GD_KT, HANDLER_ALIGN, 0);
 	SETGATE(idt[T_MCHK], false, GD_KT, HANDLER_MCHK, 0);
 	SETGATE(idt[T_SIMDERR], false, GD_KT, HANDLER_SIMDERR, 0);
+#else
+	extern uintptr_t trapinfo[];
+	extern uintptr_t trapinfotop[];
+
+	int i;
+
+	for (i = 0; i < (trapinfotop - trapinfo)/5; i++)
+	{
+		SETGATE(idt[trapinfo[i*5+1]], 
+			trapinfo[i*5+2], trapinfo[i*5+3], 
+			trapinfo[i*5+0], trapinfo[i*5+4]);
+	}
+
+#endif
 
 	// Per-CPU setup 
 	trap_init_percpu();

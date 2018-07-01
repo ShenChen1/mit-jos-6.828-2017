@@ -30,6 +30,8 @@ static struct Command commands[] = {
 	{ "showmappings", "Display the mappings from va_start to va_end", mon_showmappings },
 	{ "setmappings", "Set the mappings between va and pa", mon_setmappings },
 	{ "dumpmemory", "Dump the memory of va or pa", mon_dumpmemory },
+	{ "c", "continue", mon_continue },
+	{ "si", "stepi", mon_stepi },
 };
 
 /***** Implementations of basic kernel monitor commands *****/
@@ -313,6 +315,44 @@ mon_dumpmemory(int argc, char **argv, struct Trapframe *tf)
 	}
 
 	return 0;
+}
+
+int
+mon_continue(int argc, char **argv, struct Trapframe *tf)
+{
+	uint32_t eflags;
+
+	if (tf == NULL)
+	{
+		cprintf("No trap env !\n");
+		return 0;
+	}
+		
+	eflags = tf->tf_eflags;
+	eflags |= FL_RF;
+	eflags &= ~FL_TF;
+	tf->tf_eflags = eflags;
+	
+	return -1;
+}
+
+
+int 
+mon_stepi(int argc, char **argv, struct Trapframe *tf)
+{
+	uint32_t eflags;
+
+	if (tf == NULL)
+	{
+		cprintf("No trap env !\n");
+		return 0;
+	}
+		
+	eflags = tf->tf_eflags;
+	eflags |= FL_TF;
+	tf->tf_eflags = eflags;
+	
+	return -1;
 }
 
 

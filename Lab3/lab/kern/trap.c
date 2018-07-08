@@ -201,6 +201,8 @@ print_regs(struct PushRegs *regs)
 static void
 trap_dispatch(struct Trapframe *tf)
 {
+	int32_t res = 0;
+
 	// Handle processor exceptions.
 	// LAB 3: Your code here.
 	switch(tf->tf_trapno)
@@ -212,6 +214,18 @@ trap_dispatch(struct Trapframe *tf)
 
 		case T_PGFLT:
 			page_fault_handler(tf);
+			return;
+
+		case T_SYSCALL:			
+			res = syscall(
+				tf->tf_regs.reg_eax,
+				tf->tf_regs.reg_edx,
+				tf->tf_regs.reg_ecx,
+				tf->tf_regs.reg_ebx,
+				tf->tf_regs.reg_edi,
+				tf->tf_regs.reg_esi);
+
+			tf->tf_regs.reg_eax = res;
 			return;
 	}
 			

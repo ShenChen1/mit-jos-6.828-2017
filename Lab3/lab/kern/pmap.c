@@ -638,9 +638,36 @@ static uintptr_t user_mem_check_addr;
 int
 user_mem_check(struct Env *env, const void *va, size_t len, int perm)
 {
-	// LAB 3: Your code here.
+	// LAB 3: Your code here.	
+
+	int i = 0;
+	uintptr_t vaddr = (uintptr_t)va;
+	uintptr_t real_va = 0;
+	size_t real_len = 0;
+	pte_t *pte = NULL;
+
+	if(env == NULL || vaddr >= ULIM)	
+		goto err;
+
+	real_va = ROUNDDOWN(vaddr, PGSIZE);
+	real_len = ROUNDUP(vaddr+len, PGSIZE) - real_va;	
+
+	for( ; i < real_len; i+=PGSIZE)	{
+		if (page_lookup(env->env_pgdir, (void *)(real_va + i), &pte) == NULL)
+			goto err;
+
+		if (pte == NULL || (*pte & perm) != perm)
+			goto err;
+	}	
 
 	return 0;
+
+err:
+	//you should be careful with user_mem_check_addr
+	//when va is not page-aligned
+	user_mem_check_addr = MAX(real_va + i, vaddr);
+	
+	return -E_FAULT;
 }
 
 //

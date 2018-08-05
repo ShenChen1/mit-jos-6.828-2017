@@ -677,6 +677,17 @@ mmio_map_region(physaddr_t pa, size_t size)
 	// Hint: The staff solution uses boot_map_region.
 	//
 	// Your code here:
+	physaddr_t real_pa = ROUNDDOWN(pa, PGSIZE);
+	size_t real_size = ROUNDUP(pa+size, PGSIZE) - pa;
+
+	if (base + real_size > MMIOLIM)
+		return NULL;
+
+	boot_map_region(kern_pgdir, base, real_size, real_pa, PTE_W|PTE_PCD|PTE_PWT);
+	base += real_size;
+
+	return (void *)(base - real_size);
+
 	panic("mmio_map_region not implemented");
 }
 

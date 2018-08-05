@@ -336,7 +336,11 @@ page_init(void)
 		//[0, PGSIZE)
 		if (page2pa(pp) < PGSIZE)
 			continue;
-		
+
+		//the bootstrap of APs 
+		if(page2pa(pp) >= MPENTRY_PADDR && page2pa(pp) < MPENTRY_PADDR+PGSIZE)
+			continue;
+
 		//[IOPHYSMEM, EXTPHYSMEM)
 		if (page2pa(pp) >= IOPHYSMEM && page2pa(pp) < EXTPHYSMEM)
 			continue;

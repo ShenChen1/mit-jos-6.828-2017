@@ -157,3 +157,27 @@ All done in environment 00001002.
 No runnable environments in the system!
 Welcome to the JOS kernel monitor!
 ```
+
+# 问题
+```
+In your implementation of env_run() you should have called lcr3(). Before and after the call to lcr3(), 
+your code makes references (at least it should) to the variable e, the argument to env_run. Upon loading 
+the %cr3 register, the addressing context used by the MMU is instantly changed. But a virtual address 
+(namely e) has meaning relative to a given address context--the address context specifies the physical 
+address to which the virtual address maps. Why can the pointer e be dereferenced both before and after 
+the addressing switch?
+```
+```
+所有envs在UTOP以上的除了UVPT外的虚拟地址映射都是相同的，因此切换页目录不会对内核态产生影响
+```
+
+```
+Whenever the kernel switches from one environment to another, it must ensure the old environment's 
+registers are saved so they can be restored properly later. Why? Where does this happen?
+```
+```
+如果不保存上一个env的寄存器，那么等下轮到这个env运行时，就恢复不了当时的env上下文
+当trap发生时系统保存env上下文，在env_run()中调用env_pop_tf恢复env上下文
+```
+
+

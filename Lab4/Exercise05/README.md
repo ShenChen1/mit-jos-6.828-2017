@@ -52,3 +52,16 @@ index 293bad7..ee1ca12 100644
  
         panic("env_run not yet implemented");
 ```
+
+# 问题
+```
+It seems that using the big kernel lock guarantees that only one CPU can run the kernel 
+code at a time. Why do we still need separate kernel stacks for each CPU? Describe a 
+scenario in which using a shared kernel stack will go wrong, even with the protection 
+of the big kernel lock.
+```
+```
+大内核锁无法保护住中断上下文入栈
+当CPU0获得大内核锁处于内核态时，来自CPU1的中断可以在获取大内核锁前，
+将中断帧写入共享的内核栈，此时内核栈上的数据就会错乱
+```

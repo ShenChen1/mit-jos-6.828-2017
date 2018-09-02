@@ -52,7 +52,7 @@ sched_yield(void)
 	}
 
 	//no envs are runnable
-	if(idle && idle->env_status == ENV_RUNNING)
+	if (idle && idle->env_status == ENV_RUNNING)
 	{
 		// the environment previously
 		// running on this CPU is still ENV_RUNNING
@@ -104,7 +104,7 @@ sched_halt(void)
 		"pushl $0\n"
 		"pushl $0\n"
 		// Uncomment the following line after completing exercise 13
-		//"sti\n"
+		"sti\n"
 		"1:\n"
 		"hlt\n"
 		"jmp 1b\n"

@@ -160,10 +160,10 @@ fork(void)
 
 	//For each writable or copy-on-write page in its address space below UTOP, 
 	//the parent calls duppage
-    int pn = PGNUM(UTEXT);
-    int epn = PGNUM(UTOP - PGSIZE);
-    for (; pn < epn; pn++)
-    {
+	int pn = PGNUM(UTEXT);
+	int epn = PGNUM(UTOP - PGSIZE);
+	for (; pn < epn; pn++)
+	{
 		duppage(envid, pn);
 	}
 

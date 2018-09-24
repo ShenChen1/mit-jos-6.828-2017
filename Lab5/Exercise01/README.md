@@ -22,3 +22,15 @@ index fde1cae..4e1c0b9 100644
         load_icode(env, binary);
  }
 ```
+
+# 问题
+```
+Do you have to do anything else to ensure that this I/O privilege setting is saved and 
+restored properly when you subsequently switch from one environment to another? Why?
+```
+```
+不需要，因为I/O权限的标记是存放在tf_eflags中的。当进程切换时，对于寄存器的pop和push已经处理了tf_eflags。
+```
+
+
+
